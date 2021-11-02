@@ -1,0 +1,287 @@
+--Total Number of Passengers
+SET @total = (SELECT COUNT(passenger_id)FROM passengers);
+--Number of 1st Class Passengers
+SET @num1 = (SELECT COUNT(passenger_id)FROM passengers WHERE pclass = 1);
+--Number of 2nd Class Passengers
+SET @num2 = (SELECT COUNT(passenger_id)FROM passengers WHERE pclass = 2);
+--Number of 3rd Class Passengers
+SET @num3 = (SELECT COUNT(passenger_id)FROM passengers WHERE pclass = 3);
+
+
+--Table to show Survival Rate based on Passenger Class
+CREATE TABLE survival_rate_by_class(
+    pclass VARCHAR(5) PRIMARY KEY,
+    on_board INT,
+    survivors INT,
+    fatalities INT,
+    survival_rate DECIMAL(4,2),
+    fatality_rate DECIMAL(4,2)
+)
+;
+
+
+--Passenger Survival Rate (Total)
+INSERT INTO survival_rate_by_class
+SELECT 'ALL', @total, COUNT(passenger_id), @total - COUNT(passenger_id), COUNT(passenger_id)/@total * 100, 100 -  (COUNT(passenger_id)/@total * 100)
+FROM passengers
+WHERE survived = 1;
+
+--Passenger Survival Rate (1 Class)
+INSERT INTO survival_rate_by_class
+SELECT CONVERT(pclass, CHAR), @num1, COUNT(passenger_id) , @num1 - COUNT(passenger_id), COUNT(passenger_id)/@num1 * 100, 100 - (COUNT(passenger_id)/@num1 * 100)
+FROM passengers 
+WHERE survived = 1 AND pclass=1;
+
+
+--Passenger Survival Rate (2 Class)
+INSERT INTO survival_rate_by_class
+SELECT CONVERT(pclass, CHAR), @num2, COUNT(passenger_id) , @num2 - COUNT(passenger_id), COUNT(passenger_id)/@num2 * 100, 100 - (COUNT(passenger_id)/@num2 * 100)
+FROM passengers 
+WHERE survived = 1 AND pclass=2;
+
+--Passenger Survival Rate (3 Class)
+INSERT INTO survival_rate_by_class
+SELECT CONVERT(pclass,CHAR), @num3, COUNT(passenger_id) , @num3 - COUNT(passenger_id), COUNT(passenger_id)/@num3 * 100, 100 - (COUNT(passenger_id)/@num3 * 100)
+FROM passengers 
+WHERE survived = 1 AND pclass=3;
+
+--Total Number of Male Passengers
+set @totalm = (SELECT COUNT(passenger_id) FROM passengers where sex = 'male');
+--Number of 1st Class Male Passengers
+SET @num1m = (SELECT COUNT(passenger_id)FROM passengers WHERE pclass = 1 AND sex = 'male');
+--Number of 2nd Class Male Passengers
+SET @num2m = (SELECT COUNT(passenger_id)FROM passengers WHERE pclass = 2 AND sex = 'male');
+--Number of 3rd Class Male Passengers
+SET @num3m = (SELECT COUNT(passenger_id)FROM passengers WHERE pclass = 3 AND sex = 'male');
+
+
+--Table to show Male Survival Rate based on Passenger Class
+CREATE TABLE survival_rate_by_class_male(
+    pclass VARCHAR(5) PRIMARY KEY,
+    sex VARCHAR(6),
+    on_board INT,
+    survivors INT,
+    fatalities INT,
+    survival_rate DECIMAL(4,2),
+    fatality_rate DECIMAL(4,2)
+)
+;
+
+--Male Passenger Survival Rate (1 Class)
+INSERT INTO survival_rate_by_class_male
+SELECT CONVERT(pclass,CHAR), sex, @num1m, COUNT(passenger_id), @num1m - COUNT(passenger_id), COUNT(passenger_id)/@num1m * 100, 100 - (COUNT(passenger_id)/@num1m * 100)
+FROM passengers 
+WHERE survived = 1 AND pclass=1 AND sex = 'male';
+
+--Male Passenger Survival Rate (2 Class)
+INSERT INTO survival_rate_by_class_male
+SELECT CONVERT(pclass,CHAR), sex, @num2m, COUNT(passenger_id), @num2m - COUNT(passenger_id), COUNT(passenger_id)/@num2m * 100, 100 - (COUNT(passenger_id)/@num2m * 100)
+FROM passengers 
+WHERE survived = 1 AND pclass=2 AND sex = 'male';
+
+--Male Passenger Survival Rate (3 Class)
+INSERT INTO survival_rate_by_class_male
+SELECT CONVERT(pclass,CHAR), sex, @num3m, COUNT(passenger_id), @num3m - COUNT(passenger_id), COUNT(passenger_id)/@num3m * 100, 100 - (COUNT(passenger_id)/@num3m * 100)
+FROM passengers 
+WHERE survived = 1 AND pclass=3 AND sex = 'male';
+
+--Male Passenger Survival Rate
+INSERT INTO survival_rate_by_class_male
+SELECT 'ALL', sex, @totalm, COUNT(passenger_id), @totalm - COUNT(passenger_id), COUNT(passenger_id)/@totalm * 100, 100 - (COUNT(passenger_id)/@totalm * 100)
+FROM passengers
+WHERE survived = 1 AND sex = 'male';
+
+--Total Number of Female Passengers
+set @totalf = (SELECT COUNT(passenger_id) FROM passengers where sex = 'female');
+--Number of 1st Class Female Passengers
+SET @num1f = (SELECT COUNT(passenger_id)FROM passengers WHERE pclass = 1 AND sex = 'female');
+--Number of 2nd Class Female Passengers
+SET @num2f = (SELECT COUNT(passenger_id)FROM passengers WHERE pclass = 2  AND sex = 'female');
+--Number of 3rd Class Female Passengers
+SET @num3f = (SELECT COUNT(passenger_id)FROM passengers WHERE pclass = 3  AND sex = 'female');
+
+--Table to show Female Survival Rate based on Passenger Class
+CREATE TABLE survival_rate_by_class_female(
+    pclass VARCHAR(5) PRIMARY KEY,
+    sex VARCHAR(6),
+    on_board INT,
+    survivors INT,
+    fatalities INT,
+    survival_rate DECIMAL(4,2),
+    fatality_rate DECIMAL(4,2)
+)
+;
+
+--Female Passenger Survival Rate (1 Class)
+INSERT INTO survival_rate_by_class_female
+SELECT CONVERT(pclass,CHAR), sex, @num1f, COUNT(passenger_id), @num1f - COUNT(passenger_id), COUNT(passenger_id)/@num1f * 100, 100 - (COUNT(passenger_id)/@num1f * 100)
+FROM passengers 
+WHERE survived = 1 AND pclass=1 AND sex = 'female';
+
+--Female Passenger Survival Rate (2 Class)
+INSERT INTO survival_rate_by_class_female
+SELECT CONVERT(pclass,CHAR), sex, @num2f, COUNT(passenger_id), @num2f - COUNT(passenger_id), COUNT(passenger_id)/@num2f * 100, 100 - (COUNT(passenger_id)/@num2f * 100)
+FROM passengers 
+WHERE survived = 1 AND pclass=2 AND sex = 'female';
+
+--Female Passenger Survival Rate (3 Class)
+INSERT INTO survival_rate_by_class_female
+SELECT CONVERT(pclass,CHAR), sex, @num3f, COUNT(passenger_id), @num3f - COUNT(passenger_id), COUNT(passenger_id)/@num3f * 100, 100 - (COUNT(passenger_id)/@num3f * 100)
+FROM passengers 
+WHERE survived = 1 AND pclass=3 AND sex = 'female';
+
+--Female Passenger Survival Rate(All Classes)
+INSERT INTO survival_rate_by_class_female
+SELECT 'ALL', sex, @totalf,  COUNT(passenger_id), @totalf - COUNT(passenger_id), COUNT(passenger_id)/@totalf * 100, 100 - (COUNT(passenger_id)/@totalf * 100)
+FROM passengers
+WHERE survived = 1 AND sex = 'female';
+
+drop table survival_rate_by_age;
+
+--Table showing survival rates by Passenger's Age, also broken down by sex.
+CREATE TABLE survival_rate_by_age(
+    age_category VARCHAR(10),
+    sex VARCHAR(7),
+    on_board INT,
+    survivors INT,
+    fatalities INT,
+    survival_rate DECIMAL(4,2),
+    fatality_rate DECIMAL(4,2)
+)
+;
+
+--Number of People Aged 0-18 on Board (ALL)
+SET @child_total = (SELECT COUNT(passenger_id)FROM passengers WHERE age <= 18);
+--Number of People Aged 0-18 on Board (M)
+SET @child_male =(SELECT COUNT(passenger_id)FROM passengers WHERE age <= 18 AND sex = 'male');
+--Number of People Aged 0-18 on Board (F)
+SET @child_female =(SELECT COUNT(passenger_id)FROM passengers WHERE age <= 18 AND sex = 'female');
+--Number of People Aged 19-35 on Board (ALL)
+SET @young_adult=(SELECT COUNT(passenger_id)FROM passengers WHERE age > 18 AND age <= 35);
+--Number of People Aged 19-35 on Board (M)
+SET @young_adult_male=(SELECT COUNT(passenger_id)FROM passengers WHERE age > 18 AND age <= 35 AND sex='male');
+--Number of People Aged 19-35 on Board (F)
+SET @young_adult_female=(SELECT COUNT(passenger_id)FROM passengers WHERE age > 18 AND age <= 35 AND sex='female');
+--Number of People Aged 36-55 on Board (ALL)
+SET @medium_adult_total = (SELECT COUNT(passenger_id)FROM passengers WHERE age >= 36 AND age <= 55);
+--Number of People Aged 36-55 on Board (M)
+SET @medium_adult_total_male = (SELECT COUNT(passenger_id)FROM passengers WHERE age >= 36 AND age <= 55 AND sex ='male');
+--Number of People Aged 36-55 on Board (F)
+SET @medium_adult_total_female = (SELECT COUNT(passenger_id)FROM passengers WHERE age >= 36 AND age <= 55 AND sex ='female');
+--Number of People Aged 56+ on Board (ALL)
+SET @older_adult_total = (SELECT COUNT(passenger_id)FROM passengers WHERE age > 55);
+--Number of People Aged 56+ on Board (M)
+SET @older_adult_male = (SELECT COUNT(passenger_id)FROM passengers WHERE age > 55 AND sex ='male');
+--Number of People Aged 56+ on Board (F)
+SET @older_adult_female = (SELECT COUNT(passenger_id)FROM passengers WHERE age > 55 AND sex ='female');
+
+
+--Child Survival Rate(0-18)(All) 
+INSERT INTO survival_rate_by_age
+SELECT '0-18','ALL', @child_total, COUNT(passenger_id), @child_total - COUNT(passenger_id), COUNT(passenger_id)/@child_total * 100, 100-(COUNT(passenger_id)/@child_total * 100)
+FROM passengers
+WHERE survived = 1 AND age <= 18;
+
+--Child Survival Rate(0-18)(Male) 
+INSERT INTO survival_rate_by_age
+SELECT '0-18','male', @child_male, COUNT(passenger_id), @child_male - COUNT(passenger_id), COUNT(passenger_id)/@child_male * 100, 100-(COUNT(passenger_id)/@child_male * 100)
+FROM passengers
+WHERE survived = 1 AND age <= 18 AND sex = 'male';
+
+--Child Survival Rate(0-18)(Female) 
+INSERT INTO survival_rate_by_age
+SELECT '0-18','female', @child_female, COUNT(passenger_id), @child_female - COUNT(passenger_id), COUNT(passenger_id)/@child_female * 100, 100-(COUNT(passenger_id)/@child_female * 100)
+FROM passengers
+WHERE survived = 1 AND age <= 18 AND sex='female';
+
+--Young Adult Survival Rate (19-35)(All)
+INSERT INTO survival_rate_by_age
+SELECT '19-35', 'ALL', @young_adult, COUNT(passenger_id), @young_adult - COUNT(passenger_id), COUNT(passenger_id)/@young_adult * 100, 100 -(COUNT(passenger_id)/@young_adult * 100)
+FROM passengers
+WHERE survived = 1 AND age > 18 AND age <= 35;
+
+--Young Adult Survival Rate (19-35)(Male)
+INSERT INTO survival_rate_by_age
+SELECT '19-35', 'male', @young_adult_male, COUNT(passenger_id), @young_adult_male - COUNT(passenger_id), COUNT(passenger_id)/@young_adult_male * 100, 100 -(COUNT(passenger_id)/@young_adult_male * 100)
+FROM passengers
+WHERE survived = 1 AND age > 18 AND age <= 35 AND sex = 'male';
+
+--Young Adult Survival Rate (19-35)(Female)
+INSERT INTO survival_rate_by_age
+SELECT '19-35', 'female', @young_adult_female, COUNT(passenger_id), @young_adult_female - COUNT(passenger_id), COUNT(passenger_id)/@young_adult_female * 100, 100 -(COUNT(passenger_id)/@young_adult_female * 100)
+FROM passengers
+WHERE survived = 1 AND age > 18 AND age <= 35 AND sex = 'female';
+
+--Medium Age Adult Survival Rate (36-55)(All)
+INSERT INTO survival_rate_by_age
+SELECT '36-55', 'ALL', @medium_adult_total, COUNT(passenger_id), @medium_adult_total - COUNT(passenger_id), COUNT(passenger_id)/@medium_adult_total * 100, 100 -(COUNT(passenger_id)/@medium_adult_total * 100)
+FROM passengers
+WHERE survived = 1 AND age >= 36 AND age <= 55;
+
+--Medium Age Adult Survival Rate (36-55)(Male)
+INSERT INTO survival_rate_by_age
+SELECT '36-55', 'male', @medium_adult_total_male, COUNT(passenger_id), @medium_adult_total_male - COUNT(passenger_id), COUNT(passenger_id)/@medium_adult_total_male * 100, 100 -(COUNT(passenger_id)/@medium_adult_total_male * 100)
+FROM passengers
+WHERE survived = 1 AND age >= 36 AND age <= 55 AND sex = 'male';
+
+--Medium Age Adult Survival Rate (36-55)(Female)
+INSERT INTO survival_rate_by_age
+SELECT '36-55', 'female', @medium_adult_total_female, COUNT(passenger_id), @medium_adult_total_female - COUNT(passenger_id), COUNT(passenger_id)/@medium_adult_total_female * 100, 100 -(COUNT(passenger_id)/@medium_adult_total_female * 100)
+FROM passengers
+WHERE survived = 1 AND age >= 36 AND age <= 55 AND sex = 'female';
+
+--Older Adult Survival Rate (56+)(All)
+INSERT INTO survival_rate_by_age
+SELECT '56+', 'ALL', @older_adult_total, COUNT(passenger_id), @older_adult_total - COUNT(passenger_id), COUNT(passenger_id)/@older_adult_total * 100, 100 -(COUNT(passenger_id)/@older_adult_total * 100)
+FROM passengers
+WHERE survived = 1 AND age > 55;
+
+--Older Adult Survival Rate (56+)(Male)
+INSERT INTO survival_rate_by_age
+SELECT '56+', 'male', @older_adult_male, COUNT(passenger_id), @older_adult_male - COUNT(passenger_id), COUNT(passenger_id)/@older_adult_male * 100, 100 -(COUNT(passenger_id)/@older_adult_male * 100)
+FROM passengers
+WHERE survived = 1 AND age > 55 AND sex = 'male';
+
+--Older Adult Survival Rate (56+)(Female)
+INSERT INTO survival_rate_by_age
+SELECT '56+', 'female', @older_adult_female, COUNT(passenger_id), @older_adult_female - COUNT(passenger_id), COUNT(passenger_id)/@older_adult_female * 100, 100 -(COUNT(passenger_id)/@older_adult_female * 100)
+FROM passengers
+WHERE survived = 1 AND age > 55 AND sex = 'female';
+
+
+--Table to display passenger Survival Rate based on their embarcation point
+CREATE TABLE survival_rate_by_embarcation(
+    embarcation_point VARCHAR(1),
+    on_board INT,
+    survivors INT,
+    fatalities INT,
+    survival_rate DECIMAL(4,2),
+    fatality_rate DECIMAL(4,2)
+);
+
+--Number of passengers who embarked at Queenstown, Ireland
+SET @embarQ = (SELECT COUNT(passenger_id) FROM passengers WHERE embarked = 'Q');
+
+--Number of passengers who embarked at Cherbourg, France
+SET @embarC = (SELECT COUNT(passenger_id) FROM passengers WHERE embarked = 'C');
+
+--Number of passengers who embarked at Southampton, England
+SET @embarS = (SELECT COUNT(passenger_id) FROM passengers WHERE embarked = 'S');
+
+--Survival/ Fatality Rate of passengers who embarked at Southampton, England
+INSERT INTO survival_rate_by_embarcation
+SELECT embarked, @embarS, COUNT(passenger_id), @embarS - COUNT(passenger_id), COUNT(passenger_id)/@embarS * 100, 100 - (COUNT(passenger_id)/@embarS * 100)
+FROM passengers 
+WHERE survived = 1 AND embarked = 'S';
+
+--Survival/ Fatality Rate of passengers who embarked at Cherbourg, France
+INSERT INTO survival_rate_by_embarcation
+SELECT embarked, @embarC, COUNT(passenger_id), @embarC - COUNT(passenger_id), COUNT(passenger_id)/@embarC * 100, 100 - (COUNT(passenger_id)/@embarC * 100)
+FROM passengers 
+WHERE survived = 1 AND embarked = 'C';
+
+--Survival/ Fatality Rate of passengers who embarked at Queenstown, Ireland
+INSERT INTO survival_rate_by_embarcation
+SELECT embarked, @embarQ, COUNT(passenger_id), @embarQ - COUNT(passenger_id), COUNT(passenger_id)/@embarQ * 100, 100 - (COUNT(passenger_id)/@embarQ * 100)
+FROM passengers 
+WHERE survived = 1 AND embarked = 'Q';
