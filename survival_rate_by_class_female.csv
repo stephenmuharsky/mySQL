@@ -1,0 +1,5 @@
+pclass,sex,on_board,survivors,fatalities,survival_rate,fatality_rate
+1,female,94,89,5,94.68,5.32
+2,female,67,60,7,89.55,10.45
+3,female,138,61,77,44.20,55.80
+ALL,female,299,210,89,70.23,29.77
